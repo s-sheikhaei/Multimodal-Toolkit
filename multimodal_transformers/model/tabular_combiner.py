@@ -149,6 +149,8 @@ class TabularFeatCombiner(nn.Module):
             )
             in_dim = self.cat_feat_dim + self.numerical_feat_dim
             dims = calc_mlp_dims(in_dim, self.mlp_division, output_dim)
+            dims = [10000] # sadegh
+            output_dim = 500 # sadegh
             self.cat_and_numerical_mlp = MLP(
                 in_dim,
                 output_dim,
@@ -173,6 +175,8 @@ class TabularFeatCombiner(nn.Module):
                 dims = calc_mlp_dims(
                     self.cat_feat_dim, self.mlp_division, output_dim_cat
                 )
+                dims = [5000] # sadegh
+                output_dim_cat = 250 # sadegh
                 self.cat_mlp = MLP(
                     self.cat_feat_dim,
                     output_dim_cat,
@@ -187,12 +191,15 @@ class TabularFeatCombiner(nn.Module):
             output_dim_num = 0
             if self.numerical_feat_dim > 0:
                 output_dim_num = self.numerical_feat_dim // (self.mlp_division // 2)
+                dims = [5000] # sadegh
+                output_dim_num = 250 # sadegh
                 self.num_mlp = MLP(
                     self.numerical_feat_dim,
                     output_dim_num,
                     act=self.mlp_act,
                     dropout_prob=self.mlp_dropout,
                     num_hidden_lyr=1,
+                    hidden_channels=dims, # sadegh
                     return_layer_outs=False,
                     bn=True,
                 )
